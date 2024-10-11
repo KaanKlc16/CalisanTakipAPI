@@ -1,12 +1,24 @@
-using Microsoft.EntityFrameworkCore;
 using CalisanTakip.Repository;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+
 builder.Services.AddControllersWithViews();
 
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowSpecificOrigins",
+        builder =>
+        {
+            builder.WithOrigins("http://localhost:4200") // Angular frontend in
+                   .AllowAnyHeader()
+                   .AllowAnyMethod();
+        });
+});
+
+// Add DbContext for SQL Server
 builder.Services.AddDbContext<IsTakipDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
@@ -14,14 +26,14 @@ builder.Services.AddDbContext<IsTakipDbContext>(options =>
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options =>
 {
-    options.IdleTimeout = TimeSpan.FromMinutes(30);//çýkýþ iþlemleri
+    options.IdleTimeout = TimeSpan.FromMinutes(30);
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
 });
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// Middleware Pipeline
 if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
@@ -37,10 +49,12 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseCors("AllowSpecificOrigins");  
+
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.UseSession(); // Ensure this is added to the middleware pipeline
+app.UseSession(); 
 
 app.MapControllerRoute(
     name: "default",

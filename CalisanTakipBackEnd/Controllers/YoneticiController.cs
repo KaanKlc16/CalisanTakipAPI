@@ -18,7 +18,7 @@ namespace CalisanTakip.Controllers
             _context = new IsTakipDbContext();
         }
 
-        // Yönetici ana sayfası - yetkilendirme kontrolü ve bilgiler
+        
         [HttpGet("index")]
         public IActionResult Index()
         {
@@ -46,7 +46,7 @@ namespace CalisanTakip.Controllers
             }
         }
 
-        // Görev atama sayfası
+       
         [HttpGet("ata")]
         public IActionResult Ata()
         {
@@ -77,7 +77,7 @@ namespace CalisanTakip.Controllers
             }
         }
 
-        // Görev atama işlemi
+        
         [HttpPost("ata")]
         public IActionResult Ata([FromBody] Isler model)
         {
@@ -96,7 +96,7 @@ namespace CalisanTakip.Controllers
             return Ok(new { success = true, message = "Görev başarıyla atandı." });
         }
 
-        // Görev takip sayfası
+       
         [HttpGet("takip")]
         public IActionResult Takip()
         {
@@ -126,7 +126,7 @@ namespace CalisanTakip.Controllers
             }
         }
 
-        // Takip edilen personelin görevleri
+       
         [HttpPost("takip")]
         public IActionResult Takip([FromBody] int selectPer)
         {
@@ -143,7 +143,7 @@ namespace CalisanTakip.Controllers
             return Ok(new { success = true, message = "Personel seçildi.", secilenPersonel });
         }
 
-        // Seçilen personelin görevlerinin listelenmesi
+        
         [HttpGet("listele")]
         public IActionResult Listele()
         {
@@ -184,7 +184,7 @@ namespace CalisanTakip.Controllers
             }
         }
 
-        // Takvimdeki görevleri getirme
+        
         [HttpGet("getCalendarEvents")]
         public IActionResult GetCalendarEvents()
         {

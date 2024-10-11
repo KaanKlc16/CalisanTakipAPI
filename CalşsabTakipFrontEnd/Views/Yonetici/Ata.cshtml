@@ -1,0 +1,100 @@
+﻿@model CalisanTakip.Repository.Models.Isler
+
+@{
+    ViewData["Title"] = "Görev Ata";
+    Layout = "~/Views/Shared/_LayoutYonetici.cshtml";
+}
+
+  
+    
+    <div id="content-wrapper" class="d-flex flex-column">
+
+        
+        <div id="content" class="d-flex justify-content-center align-items-center" style="min-height: 100vh;">
+
+            
+            <h1 class="h3 mb-4 text-gray-800">Görev Ata</h1>
+
+            
+            <div class="col-lg-6">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Görev Detayları</h6>
+                    </div>
+                    <div class="card-body">
+                        <form asp-action="Ata">
+                            
+                            <div class="form-group">
+                                <label asp-for="IsBaslik" class="form-label">Görev Başlığı</label>
+                                <input asp-for="IsBaslik" class="form-control form-control-sm" />
+                                <span asp-validation-for="IsBaslik" class="text-danger"></span>
+                            </div>
+
+                           
+                            <div class="form-group">
+                                <label asp-for="IsAciklama" class="form-label">Görev Açıklaması</label>
+                                <textarea asp-for="IsAciklama" class="form-control form-control-sm"></textarea>
+                                <span asp-validation-for="IsAciklama" class="text-danger"></span>
+                            </div>
+
+                          
+                            <div class="form-group">
+                                <label asp-for="IsPersonelId" class="form-label">Çalışan Seçin</label>
+                                <select asp-for="IsPersonelId" class="form-control form-control-sm">
+                                    <option selected disabled>Personel Seçin</option>
+                                    @foreach (var personel in (List<CalisanTakip.Repository.Models.Personeller>)ViewBag.personeller)
+                                    {
+                                        <option value="@personel.PersonelId">@personel.PersonelAdSoyad</option>
+                                    }
+                                </select>
+                                <span asp-validation-for="IsPersonelId" class="text-danger"></span>
+                            </div>
+
+                            <!-- Başlangıç Tarihi -->
+                            <div class="form-group">
+                                <label asp-for="IsBaslangic" class="form-label">Başlangıç Tarihi</label>
+                                <input asp-for="IsBaslangic" class="form-control form-control-sm" type="datetime-local" />
+                                <span asp-validation-for="IsBaslangic" class="text-danger"></span>
+                            </div>
+
+                            <!-- Bitirme Süresi -->
+                            <div class="form-group">
+                                <label asp-for="IsBitirmeSure" class="form-label">Bitirme Süresi</label>
+                                <input asp-for="IsBitirmeSure" class="form-control form-control-sm" type="datetime-local" />
+                                <span asp-validation-for="IsBitirmeSure" class="text-danger"></span>
+                            </div>
+
+                            <!-- Submit Button -->
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-success btn-icon-split">
+                                    <span class="icon text-white-50">
+                                        <i class="fas fa-check"></i>
+                                    </span>
+                                    <span class="text">Görev Ata</span>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End of Main Content -->
+        <!-- Footer -->
+        <footer class="sticky-footer bg-white">
+            <div class="container my-auto">
+                <div class="copyright text-center my-auto">
+                    <span>Copyright &copy; Görev Takibi Paneli 2024</span>
+                </div>
+            </div>
+        </footer>
+        <!-- End of Footer -->
+
+    </div>
+    <!-- End of Content Wrapper -->
+
+<!-- End of Page Wrapper -->
+<!-- SB Admin 2 Validation -->
+<script src="~/vendor/jquery/jquery.min.js"></script>
+<script src="~/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="~/vendor/jquery-easing/jquery.easing.min.js"></script>
+<script src="~/js/sb-admin-2.min.js"></script>

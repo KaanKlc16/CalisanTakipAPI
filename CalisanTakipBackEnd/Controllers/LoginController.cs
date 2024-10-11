@@ -25,11 +25,10 @@ namespace CalisanTakip.Controllers
                 return BadRequest(new { message = "Kullanıcı adı veya parola boş olamaz" });
             }
 
-           
             var personel = _context.Personellers
                             .FirstOrDefault(p => p.PersonelKullaniciAd == loginRequest.KullaniciAd && p.PersonelParola == loginRequest.Parola);
 
-            if (personel != null) // personel null değilse giriş yapabilir, nullsa giremez 
+            if (personel != null) // personel null değilse giriş yapabilir, nullsa giremez
             {
                 HttpContext.Session.SetString("PersonelAdSoyad", personel.PersonelAdSoyad ?? string.Empty);
                 HttpContext.Session.SetInt32("PersonelId", personel.PersonelId);
@@ -44,7 +43,21 @@ namespace CalisanTakip.Controllers
                     PersonelYetkiTurId = personel.PersonelYetkiTurId ?? 0
                 };
 
-                return Ok(response); 
+                // Kullanıcının yetki türüne göre yönlendirme
+                if (personel.PersonelYetkiTurId == 1) // 1: Yönetici yetki türü
+                {
+                    // Yöneticiyi yönlendirmek için
+                    return Ok(new { redirectUrl = "/Yonetici/Index" }); // Yönetici sayfasına yönlendirme
+                }
+                else if (personel.PersonelYetkiTurId == 2) // 2: Çalışan yetki türü
+                {
+                    // Çalışanı yönlendirmek için
+                    return Ok(new { redirectUrl = "/Calisan/Index" }); // Çalışan sayfasına yönlendirme
+                }
+                else
+                {
+                    return Unauthorized(new { message = "Geçersiz yetki." });
+                }
             }
             else
             {
