@@ -3,18 +3,19 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
+// Add services to the container.
 builder.Services.AddControllersWithViews();
 
-
+// CORS policy for allowing frontend requests
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowSpecificOrigins",
         builder =>
         {
-            builder.WithOrigins("http://localhost:4200") // Angular frontend in
+            builder.WithOrigins("http://localhost:3000") // Frontend URL
                    .AllowAnyHeader()
-                   .AllowAnyMethod();
+                   .AllowAnyMethod()
+                   .AllowCredentials(); // Allow session and cookies
         });
 });
 
@@ -26,9 +27,9 @@ builder.Services.AddDbContext<IsTakipDbContext>(options =>
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options =>
 {
-    options.IdleTimeout = TimeSpan.FromMinutes(30);
-    options.Cookie.HttpOnly = true;
-    options.Cookie.IsEssential = true;
+    options.IdleTimeout = TimeSpan.FromMinutes(30); // Session timeout
+    options.Cookie.HttpOnly = true; // Security
+    options.Cookie.IsEssential = true; // Required for GDPR compliance
 });
 
 var app = builder.Build();
@@ -49,12 +50,14 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-app.UseCors("AllowSpecificOrigins");  
+// Apply the correct CORS policy
+app.UseCors("AllowSpecificOrigins");
 
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.UseSession(); 
+// Session usage
+app.UseSession();
 
 app.MapControllerRoute(
     name: "default",
