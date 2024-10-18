@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 
 namespace CalisanTakip.Controllers
-{
+{ //İPTAL
     [ApiController]
     [Route("api/[controller]")]
     public class CalisanController : ControllerBase
